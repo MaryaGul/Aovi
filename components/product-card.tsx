@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
-import { CldImage } from 'next-cloudinary'
+import Image from 'next/image'
 import { Phone, Music, Heart, Battery, Wifi } from 'lucide-react'
 import { TextEditor } from './TextEditor'
 import { ColorPicker } from './ColorPicker'
@@ -186,13 +186,11 @@ export function ProductCard({
         {/* Product Image */}
         <div className="relative -mr-32">
           <div className="absolute -bottom-8 -right-8 w-[200px] h-[200px] bg-black/20 blur-3xl rounded-full"></div>
-          <CldImage
-            src={publicId}
-            alt={alt}
+          <Image
+            src="/1чч.png"
             width={900}
             height={1200}
-            angle={12}
-            className="max-w-lg z-10"
+            alt="Picture of the author"
           />
         </div>
       </div>

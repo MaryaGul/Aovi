@@ -28,7 +28,10 @@ export function ColorPicker({ color, onChange }: ColorPickerProps) {
               key={c}
               className="w-8 h-8 rounded-full p-0"
               style={{ backgroundColor: c }}
-              onClick={() => onChange(c)}
+              onClick={() => {
+                onChange(c);
+                console.log('Color selected:', c);
+              }}
             />
           ))}
         </div>
@@ -36,3 +39,4 @@ export function ColorPicker({ color, onChange }: ColorPickerProps) {
     </Popover>
   );
 }
+

@@ -1,6 +1,6 @@
 import type React from "react"
 import { useState, useEffect } from "react"
-import { CldImage } from "next-cloudinary"
+import Image from 'next/image'
 import { Leaf, FlaskRoundIcon as Flask, Shield, Star, Award } from "lucide-react"
 import { TextEditor } from "./TextEditor"
 import { ColorPicker } from "./ColorPicker"
@@ -21,11 +21,10 @@ const initialFeatures: Feature[] = [
 ]
 
 interface ProductCardProps {
-  publicId: string
-  backgroundId: string
+  src: string
   headline: string
   subheadline: string
-  capsuleCount: string
+
   alt: string
 }
 
@@ -37,16 +36,15 @@ interface TextStyles {
 }
 
 export function ProductCard2({
-  publicId,
-  backgroundId,
+  src,
   headline: initialHeadline = "ОМЕГА 3",
   subheadline: initialSubheadline = "высокой концентрации",
-  capsuleCount: initialCapsuleCount = "90 капсул",
+ 
   alt,
 }: ProductCardProps) {
   const [headline, setHeadline] = useState(initialHeadline)
   const [subheadline, setSubheadline] = useState(initialSubheadline)
-  const [capsuleCount, setCapsuleCount] = useState(initialCapsuleCount)
+ 
   const [features, setFeatures] = useState(initialFeatures)
   const [selectedText, setSelectedText] = useState<"headline" | "subheadline" | "capsuleCount" | number | null>(null)
   const [selectedIcon, setSelectedIcon] = useState<number | null>(null)
@@ -148,28 +146,8 @@ export function ProductCard2({
 
   return (
     <div className="relative w-[450px] h-[600px] overflow-hidden bg-gradient-to-br from-gray-900 to-black">
-      {/* Logo Section */}
-      <div className="absolute top-4 left-4">
-        <img src="/placeholder.svg" alt="Logo" className="w-24 h-8" />
-      </div>
-
-      {/* Capsule Count */}
-      <div className="absolute top-4 right-4 text-right">
-        <div
-          className="text-[90px] font-bold leading-none select-text cursor-text"
-          style={capsuleCountStyles}
-          onMouseUp={(e) => handleTextSelection("capsuleCount", e)}
-        >
-          90
-        </div>
-        <div className="text-2xl text-gold">капсул</div>
-      </div>
-
-      {/* Premium Badge */}
-      <div className="absolute top-24 right-4 flex items-center gap-2">
-        <img src="/placeholder.svg" alt="Iceland Flag" className="w-8 h-6" />
-        <span className="text-gold text-xl font-bold">ПРЕМИУМ</span>
-      </div>
+      
+      
 
       {/* Main Content */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-8">
@@ -225,7 +203,7 @@ export function ProductCard2({
 
       {/* Product Image */}
       <div className="absolute bottom-0 right-0 w-1/2">
-        <CldImage src={publicId} alt={alt} width={400} height={500} className="object-contain" />
+        <Image src={src} alt={alt} width={900} height={1200} />
       </div>
 
       {selectedText !== null && (
