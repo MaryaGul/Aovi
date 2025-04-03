@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react"
 import { ProductForm } from "@/components/product-form"
 import { ProductCard2 } from "@/components/product-card2"
+import { ProductCard } from "@/components/product-card"
+import { FutureProductCard } from "@/components/future-product-card"
+//import { Future-product-card } from "@/components/NewComponent"
 
 interface CardData {
   src: string
@@ -45,61 +48,9 @@ export default function Home() {
           .replace(/\{props\.alt\}/g, cardData.alt)
 
         // Создаем полный HTML документ для iframe с встроенными стилями
-        const html = `
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-              /* Базовые стили Tailwind */
-              *, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e5e7eb; }
-              html { line-height: 1.5; -webkit-text-size-adjust: 100%; tab-size: 4; font-family: ui-sans-serif, system-ui, sans-serif; }
-              body { margin: 0; line-height: inherit; }
-              
-              /* Утилиты Tailwind */
-              .container { width: 100%; margin-right: auto; margin-left: auto; padding-right: 1rem; padding-left: 1rem; }
-              .flex { display: flex; }
-              .items-center { align-items: center; }
-              .justify-center { justify-content: center; }
-              .rounded-lg { border-radius: 0.5rem; }
-              .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-              .p-4 { padding: 1rem; }
-              .m-4 { margin: 1rem; }
-              .text-center { text-align: center; }
-              .font-bold { font-weight: 700; }
-              .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-              .text-gray-700 { color: #374151; }
-              .bg-white { background-color: #ffffff; }
-              
-              /* Дополнительные стили */
-              .dynamic-card { width: 100%; height: 100%; }
-              img { max-width: 100%; height: auto; }
-              
-              /* Медиа-запросы для адаптивности */
-              @media (min-width: 640px) {
-                .container { max-width: 640px; }
-              }
-              @media (min-width: 768px) {
-                .container { max-width: 768px; }
-              }
-            </style>
-          </head>
-          <body>
-            <div class="dynamic-card">
-              ${jsxWithProps}
-            </div>
-            <script>
-              // Здесь можно добавить JavaScript для интерактивности
-              document.addEventListener('DOMContentLoaded', function() {
-                console.log('Card loaded successfully');
-              });
-            </script>
-          </body>
-          </html>
-        `
+     
 
-        setIframeContent(html)
+    
       } catch (error) {
         console.error("Error creating iframe content:", error)
       }
@@ -130,7 +81,7 @@ export default function Home() {
           {cardData.src && (
             <div>
               <h2 className="text-xl font-bold mb-4">Стандартная карточка:</h2>
-              <ProductCard2
+              <ProductCard
                 src={cardData.src}
                 headline={cardData.headline}
                 subheadline={cardData.subheadline}
@@ -143,12 +94,8 @@ export default function Home() {
             <div>
               <h2 className="text-xl font-bold mb-4">Сгенерированная карточка:</h2>
               <div className="border border-gray-200 rounded-lg overflow-hidden">
-                <iframe
-                  srcDoc={iframeContent}
-                  className="w-full h-[600px] border-0"
-                  title="Generated Card"
-                  sandbox="allow-scripts"
-                />
+                <FutureProductCard
+         />
               </div>
             </div>
           )}

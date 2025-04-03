@@ -43,24 +43,6 @@ export function ProductForm({ onGenerate }: ProductFormProps) {
 
   const describePicture = async (imageBase64: string): Promise<string> => {
     try {
-    //   const response = await fetch("http://localhost:11434/api/generate", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       model: "llava:7b",
-    //       prompt:
-    //         "Analyze this product card design and provide a detailed description of its layout, visual hierarchy, spacing, colors, typography, and any special design elements. Focus on the structural and stylistic aspects that make this card design effective.",
-    //       images: [imageBase64.split(",")[1]],
-    //     }),
-    //   })
-
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! status: ${response.status}`)
-    //   }
-
-    //   const reader = response.body?.getReader()
       let fullResponse = `The design effectively communicates the product's features and appeal while maintaining a clean and contemporary aesthetic. The use of negative space allows each element to breathe and not become too busy or cluttered, ensuring that the watch remains the star of the show. 
 product-form.tsx:208 Reference image description:  The image you've provided appears to be a digital advertisement or promotional graphic for a smartwatch. Here is an analysis of the layout and design elements:
 
@@ -83,26 +65,6 @@ product-form.tsx:208 Reference image description:  The image you've provided app
 9. **Commercial Elements**: The presence of price information (2,195 руб), as well as icons for different payment options and a phone number for customer service, indicates that this is a commercial advertisement designed to convert viewers into buyers.
 `
 
-      // if (reader) {
-      //   while (true) {
-      //     const { done, value } = await reader.read()
-      //     if (done) break
-      //     const chunk = new TextDecoder().decode(value)
-      //     console.log("Llava chunk:", chunk)
-      //     const lines = chunk.split("\n")
-      //     for (const line of lines) {
-      //       if (line.trim() !== "") {
-      //         try {
-      //           const json = JSON.parse(line)
-      //           fullResponse += json.response
-      //         } catch (e) {
-      //           console.error("Error parsing JSON:", e)
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-
       console.log("Llava full response:", fullResponse)
       return fullResponse || "No description available"
     } catch (error: unknown) {
@@ -113,45 +75,6 @@ product-form.tsx:208 Reference image description:  The image you've provided app
 
   const generateCardCode = async (referenceDescription: string) => {
     try {
-//       const prompt = `Based on this product card design description: "${referenceDescription}", 
-// generate a product card HTML code.
-
-// IMPORTANT: Return ONLY the HTML code without any text descriptions, comments, or explanations.
-// Start your response with the HTML code directly.
-
-// Example of expected format:
-// <div class="...">
-//   <!-- HTML here -->
-//   <img src="{props.src}" alt="{props.alt}" />
-//   <h2>{props.headline}</h2>
-//   <p>{props.subheadline}</p>
-// </div>
-
-// Requirements:
-// - Use only Tailwind CSS for styling (use class instead of className)
-// - Make it responsive
-// - Use the placeholders: {props.src}, {props.headline}, {props.subheadline}, and {props.alt}
-// - DO NOT include any imports, exports, return statements, or function declarations
-// - DO NOT include any text before or after the HTML code
-// - You can use inline JavaScript for interactivity if needed`
-
-//       const response = await fetch("http://localhost:11434/api/generate", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           model: "deepseek-r1:8b",
-//           prompt: prompt,
-//           temperature: 0.1,
-//         }),
-//       })
-
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`)
-//       }
-//       console.log(response.body)
-//       const reader = response.body?.getReader()
       let fullResponse = `<think>
 Alright, I need to create a product card based on the user's requirements using Tailwind CSS. The design should be responsive and include placeholders for images, headline, subheadline, and alt text.
 
@@ -195,47 +118,19 @@ Finally, I'll test the structure to make sure it's responsive, adjusting classes
 </div>
 \`\`\``
     
-
-      // if (reader) {
-      //   while (true) {
-      //     const { done, value } = await reader.read()
-      //     if (done) break
-      //     const chunk = new TextDecoder().decode(value)
-      //     const lines = chunk.split("\n")
-      //     for (const line of lines) {
-      //       if (line.trim() !== "") {
-      //         try {
-      //           const json = JSON.parse(line)
-      //           fullResponse += json.response
-      //         } catch (e) {
-      //           console.error("Error parsing JSON:", e)
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
       console.log(fullResponse)
-      // Очищаем код от всего лишнего
       let cleanCode = fullResponse
-        // Удаляем все до первого HTML тега
         .replace(/^[\s\S]*?(<\w+)/i, "$1")
-        // Удаляем все теги <Thinking> и их содержимое
         .replace(/<think>[\s\S]*?<\/think>/gi, "")
         .replace(/<think>[\s\S]*?<\/think>/gi, "")
-        // Удаляем текст "Generated component code:"
         .replace(/Generated component code:/gi, "")
         .replace(/Clean component code:/gi, "")
-        // Удаляем все markdown блоки кода
         .replace(/```jsx|```tsx|```html|```|`/g, "")
-        // Удаляем все комментарии
         .replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, "")
-        // Удаляем любой текст перед первым HTML тегом
         .replace(/^[^<]*/m, "")
-        // Удаляем любой текст после последнего HTML тега
         .replace(/>[^<]*$/, ">")
         .trim()
 
-      // Проверяем, что код начинается с HTML тега
       if (!cleanCode.startsWith("<")) {
         cleanCode = "<div>Error: Invalid generated code</div>"
       }
@@ -274,7 +169,6 @@ Finally, I'll test the structure to make sure it's responsive, adjusting classes
         productDescription: description,
       }))
 
-      // Автоматически генерируем код карточки на основе описания
       await generateCardCode(description)
     }
   }
@@ -307,12 +201,12 @@ Finally, I'll test the structure to make sure it's responsive, adjusting classes
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="product-description">Описание референса (от LLAVA)</Label>
+        <Label htmlFor="product-description">Описание товара</Label>
         <Textarea
           id="product-description"
           value={formData.productDescription}
-          readOnly
-          placeholder="Здесь появится анализ референса от LLAVA..."
+          onChange={(e) => handleInputChange("productDescription", e.target.value)}
+          placeholder="Введите описание товара"
           className="min-h-[100px]"
         />
       </div>
@@ -336,21 +230,9 @@ Finally, I'll test the structure to make sure it's responsive, adjusting classes
         <Label htmlFor="remove-background">Удалить фон</Label>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="generated-code">Сгенерированный код компонента</Label>
-        <Textarea
-          id="generated-code"
-          value={formData.generatedCode}
-          readOnly
-          placeholder="Здесь появится сгенерированный код компонента..."
-          className="min-h-[200px] font-mono text-sm"
-        />
-      </div>
-
       <Button onClick={handleGenerate} className="w-full">
         Применить сгенерированный дизайн
       </Button>
     </div>
   )
 }
-
